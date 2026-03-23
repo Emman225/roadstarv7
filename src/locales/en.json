@@ -1,0 +1,11 @@
+{
+    "welcome": "Welcome to ROADSTAR",
+    "slogan": "Your Partner for the Road",
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "services": "Services",
+        "vehicles": "Vehicles",
+        "contact": "Contact"
+    }
+}

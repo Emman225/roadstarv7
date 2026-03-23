@@ -1,0 +1,765 @@
+{
+    "info": {
+        "_postman_id": "roadstar-api-collection",
+        "name": "RoadStar API - Collection Complète",
+        "description": "Collection complète pour tester tous les endpoints de l'API RoadStar",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@roadstar.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/register",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "Créer un nouveau compte utilisateur"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "// Sauvegarder le token JWT automatiquement",
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    if (jsonData.access_token) {",
+                                    "        pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"admin@roadstar.com\",\n    \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Se connecter et obtenir un token JWT"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User Info",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "me"
+                            ]
+                        },
+                        "description": "Obtenir les informations de l'utilisateur connecté"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Refresh Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "// Sauvegarder le nouveau token JWT",
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    if (jsonData.access_token) {",
+                                    "        pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/refresh",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "refresh"
+                            ]
+                        },
+                        "description": "Rafraîchir le token JWT"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "logout"
+                            ]
+                        },
+                        "description": "Se déconnecter et invalider le token"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints d'authentification (register, login, logout, etc.)"
+        },
+        {
+            "name": "Vehicles (Public)",
+            "item": [
+                {
+                    "name": "Get All Vehicles",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/vehicles",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vehicles"
+                            ]
+                        },
+                        "description": "Récupérer tous les véhicules"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Available Vehicles",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/vehicles/available",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "available"
+                            ]
+                        },
+                        "description": "Récupérer uniquement les véhicules disponibles"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Featured Vehicles",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/vehicles/featured",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "featured"
+                            ]
+                        },
+                        "description": "Récupérer les véhicules en vedette"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Vehicle by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/vehicles/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vehicles",
+                                "1"
+                            ]
+                        },
+                        "description": "Récupérer un véhicule par son ID"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints publics pour consulter les véhicules"
+        },
+        {
+            "name": "Vehicles (Admin)",
+            "item": [
+                {
+                    "name": "Create Vehicle",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"brand\": \"Mercedes\",\n    \"model\": \"Classe S\",\n    \"year\": 2023,\n    \"license_plate\": \"AB-123-CD\",\n    \"color\": \"Noir\",\n    \"mileage\": 5000,\n    \"fuel_type\": \"Diesel\",\n    \"transmission\": \"Automatique\",\n    \"seats\": 5,\n    \"daily_rate\": 250.00,\n    \"status\": \"available\",\n    \"is_featured\": true,\n    \"description\": \"Véhicule de luxe confortable et spacieux\",\n    \"features\": [\"GPS\", \"Climatisation\", \"Sièges en cuir\", \"Caméra de recul\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/vehicles",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "vehicles"
+                            ]
+                        },
+                        "description": "Créer un nouveau véhicule (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Vehicle",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"brand\": \"Mercedes\",\n    \"model\": \"Classe S\",\n    \"year\": 2023,\n    \"license_plate\": \"AB-123-CD\",\n    \"color\": \"Noir Métallisé\",\n    \"mileage\": 6000,\n    \"fuel_type\": \"Diesel\",\n    \"transmission\": \"Automatique\",\n    \"seats\": 5,\n    \"daily_rate\": 270.00,\n    \"status\": \"available\",\n    \"is_featured\": true,\n    \"description\": \"Véhicule de luxe premium avec toutes les options\",\n    \"features\": [\"GPS\", \"Climatisation\", \"Sièges en cuir\", \"Caméra de recul\", \"Toit ouvrant\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/vehicles/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "vehicles",
+                                "1"
+                            ]
+                        },
+                        "description": "Modifier un véhicule existant (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Vehicle",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/vehicles/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "vehicles",
+                                "1"
+                            ]
+                        },
+                        "description": "Supprimer un véhicule (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Vehicle Statistics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/vehicles/stats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "vehicles",
+                                "stats"
+                            ]
+                        },
+                        "description": "Obtenir les statistiques des véhicules (Admin uniquement)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints admin pour gérer les véhicules"
+        },
+        {
+            "name": "Messages (Public)",
+            "item": [
+                {
+                    "name": "Contact Form",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Jean Dupont\",\n    \"email\": \"jean.dupont@example.com\",\n    \"phone\": \"+243 812 345 678\",\n    \"subject\": \"Demande d'information\",\n    \"message\": \"Bonjour, je souhaiterais obtenir plus d'informations sur vos services de location.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/messages/contact",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "messages",
+                                "contact"
+                            ]
+                        },
+                        "description": "Envoyer un message via le formulaire de contact"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reservation Form",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Marie Martin\",\n    \"email\": \"marie.martin@example.com\",\n    \"phone\": \"+243 898 765 432\",\n    \"vehicle_id\": 1,\n    \"start_date\": \"2025-01-15\",\n    \"end_date\": \"2025-01-20\",\n    \"pickup_location\": \"Kinshasa Centre\",\n    \"message\": \"Je souhaite réserver ce véhicule pour un voyage d'affaires.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/messages/reservation",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "messages",
+                                "reservation"
+                            ]
+                        },
+                        "description": "Envoyer une demande de réservation"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints publics pour les formulaires de contact et réservation"
+        },
+        {
+            "name": "Messages (Admin)",
+            "item": [
+                {
+                    "name": "Get All Messages",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages"
+                            ]
+                        },
+                        "description": "Récupérer tous les messages (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Message Statistics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/stats",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "stats"
+                            ]
+                        },
+                        "description": "Obtenir les statistiques des messages (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Unread Count",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/unread-count",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "unread-count"
+                            ]
+                        },
+                        "description": "Obtenir le nombre de messages non lus (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Messages by Type - Contact",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/type/contact",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "type",
+                                "contact"
+                            ]
+                        },
+                        "description": "Récupérer les messages de type 'contact' (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Messages by Type - Reservation",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/type/reservation",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "type",
+                                "reservation"
+                            ]
+                        },
+                        "description": "Récupérer les messages de type 'reservation' (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Message by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "1"
+                            ]
+                        },
+                        "description": "Récupérer un message par son ID (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Message as Read",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/1/read",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "1",
+                                "read"
+                            ]
+                        },
+                        "description": "Marquer un message comme lu (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Message as Unread",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/1/unread",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "1",
+                                "unread"
+                            ]
+                        },
+                        "description": "Marquer un message comme non lu (Admin uniquement)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Message",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/admin/messages/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "messages",
+                                "1"
+                            ]
+                        },
+                        "description": "Supprimer un message (Admin uniquement)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints admin pour gérer les messages"
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000/api",
+            "type": "string"
+        }
+    ]
+}

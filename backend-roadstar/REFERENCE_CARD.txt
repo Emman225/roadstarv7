@@ -1,0 +1,253 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║                   ROADSTAR API - COLLECTION POSTMAN                       ║
+║                         Guide de Référence Rapide                         ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  📦 FICHIERS DISPONIBLES                                                  │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  ✓ RoadStar_API.postman_collection.json
+      → Collection Postman complète (24 endpoints)
+      
+  ✓ RoadStar_Environment.postman_environment.json
+      → Variables d'environnement
+      
+  ✓ README_POSTMAN.md
+      → Guide de démarrage principal
+      
+  ✓ POSTMAN_GUIDE.md
+      → Documentation complète et détaillée
+      
+  ✓ API_ENDPOINTS.md
+      → Liste de référence de tous les endpoints
+      
+  ✓ QUICK_START.md
+      → Résumé visuel et checklist
+      
+  ✓ database/seeders/TestDataSeeder.php
+      → Générateur de données de test
+      
+  ✓ setup-postman-tests.bat
+      → Script automatique Windows CMD
+      
+  ✓ setup-postman-tests.ps1
+      → Script automatique PowerShell
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  🚀 DÉMARRAGE EN 3 ÉTAPES                                                 │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  [1] PRÉPARER LA BASE DE DONNÉES
+  
+      Script automatique (recommandé) :
+      $ setup-postman-tests.bat
+      
+      OU commandes manuelles :
+      $ php artisan migrate:fresh
+      $ php artisan db:seed --class=TestDataSeeder
+      $ php artisan serve
+
+  [2] IMPORTER DANS POSTMAN
+  
+      • Ouvrir Postman
+      • Import → RoadStar_API.postman_collection.json
+      • Import → RoadStar_Environment.postman_environment.json
+      • Sélectionner l'environnement "RoadStar - Local Development"
+
+  [3] TESTER !
+  
+      • Ouvrir "Authentication" → "Login"
+      • Envoyer la requête
+      • Le token JWT est sauvegardé automatiquement ✨
+      • Tous les autres endpoints sont prêts !
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  📊 STRUCTURE DE LA COLLECTION (24 endpoints)                             │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  🔐 Authentication (5)
+  ├── POST   /auth/register                 [Public]
+  ├── POST   /auth/login                    [Public] ⭐ Auto-save JWT
+  ├── GET    /auth/me                       [Protected]
+  ├── POST   /auth/refresh                  [Protected]
+  └── POST   /auth/logout                   [Protected]
+
+  🚗 Vehicles - Public (4)
+  ├── GET    /vehicles                      [Public]
+  ├── GET    /vehicles/available            [Public]
+  ├── GET    /vehicles/featured             [Public]
+  └── GET    /vehicles/{id}                 [Public]
+
+  🚗 Vehicles - Admin (4)
+  ├── POST   /admin/vehicles                [Protected]
+  ├── PUT    /admin/vehicles/{id}           [Protected]
+  ├── DELETE /admin/vehicles/{id}           [Protected]
+  └── GET    /admin/vehicles/stats          [Protected]
+
+  💬 Messages - Public (2)
+  ├── POST   /messages/contact              [Public]
+  └── POST   /messages/reservation          [Public]
+
+  💬 Messages - Admin (9)
+  ├── GET    /admin/messages                [Protected]
+  ├── GET    /admin/messages/stats          [Protected]
+  ├── GET    /admin/messages/unread-count   [Protected]
+  ├── GET    /admin/messages/type/contact   [Protected]
+  ├── GET    /admin/messages/type/reservation  [Protected]
+  ├── GET    /admin/messages/{id}           [Protected]
+  ├── PUT    /admin/messages/{id}/read      [Protected]
+  ├── PUT    /admin/messages/{id}/unread    [Protected]
+  └── DELETE /admin/messages/{id}           [Protected]
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  🎯 DONNÉES DE TEST GÉNÉRÉES                                              │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  👤 COMPTE ADMIN
+     Email    : admin@roadstar.com
+     Password : password123
+
+  🚗 VÉHICULES (10)
+     ├── Mercedes Classe S      (Available)  [Featured] - 250€/jour
+     ├── Toyota Land Cruiser    (Available)  [Featured] - 200€/jour
+     ├── BMW Série 7            (Available)  [Featured] - 280€/jour
+     ├── Audi A6                (Available)             - 180€/jour
+     ├── Range Rover Sport      (Rented)     [Featured] - 300€/jour
+     ├── Volkswagen Tiguan      (Available)             - 120€/jour
+     ├── Ford Explorer          (Available)             - 190€/jour
+     ├── Nissan Patrol          (Maintenance)           - 210€/jour
+     ├── Tesla Model S          (Reserved)   [Featured] - 320€/jour
+     └── Lexus RX 450h          (Available)             - 240€/jour
+
+  💬 MESSAGES (9)
+     ├── 4 messages de contact (3 non lus)
+     └── 5 demandes de réservation (3 non lues)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  ⚙️ VARIABLES D'ENVIRONNEMENT                                             │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  base_url  : http://localhost:8000/api
+  jwt_token : (auto-rempli après login)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  📈 STATISTIQUES                                                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  Par méthode HTTP              Par niveau d'accès
+  ┌─────────────────────┐       ┌─────────────────────┐
+  │ GET    : 15 (62.5%) │       │ Public    : 11 (46%)│
+  │ POST   :  6 (25.0%) │       │ Protected : 13 (54%)│
+  │ PUT    :  2 ( 8.3%) │       └─────────────────────┘
+  │ DELETE :  2 ( 4.2%) │
+  └─────────────────────┘
+
+  Par ressource
+  ┌─────────────────────────────┐
+  │ Authentication :  5 (20.8%) │
+  │ Vehicles       :  8 (33.3%) │
+  │ Messages       : 11 (45.8%) │
+  └─────────────────────────────┘
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  🎓 SCÉNARIOS DE TEST                                                     │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  🟢 TEST RAPIDE (2 min)
+     1. Login
+     2. Get All Vehicles
+     3. Get Vehicle Statistics
+     4. Logout
+
+  🟡 TEST PUBLIC COMPLET (5 min)
+     1. Get All Vehicles
+     2. Get Available Vehicles
+     3. Get Featured Vehicles
+     4. Get Vehicle by ID
+     5. Contact Form
+     6. Reservation Form
+
+  🔴 TEST ADMIN COMPLET (10 min)
+     1. Login
+     2. Get Vehicle Stats
+     3. Create Vehicle
+     4. Update Vehicle
+     5. Get All Messages
+     6. Get Unread Count
+     7. Mark Message as Read
+     8. Delete Message
+     9. Delete Vehicle
+     10. Logout
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  ✅ CHECKLIST AVANT DE COMMENCER                                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  Backend
+  [ ] Laravel installé
+  [ ] MySQL installé et accessible
+  [ ] Fichier .env configuré
+  [ ] Migrations exécutées
+  [ ] Données de test générées
+  [ ] Serveur Laravel démarré
+
+  Postman
+  [ ] Postman installé
+  [ ] Collection importée
+  [ ] Environnement importé
+  [ ] Environnement "RoadStar - Local Development" sélectionné
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  📚 DOCUMENTATION                                                         │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  Démarrage rapide    → README_POSTMAN.md
+  Guide complet       → POSTMAN_GUIDE.md
+  Référence endpoints → API_ENDPOINTS.md
+  Résumé visuel       → QUICK_START.md
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  🆘 BESOIN D'AIDE ?                                                       │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  Problème                         Solution
+  ════════════════════════════════════════════════════════════════════════
+  401 Unauthorized              → Exécuter Login à nouveau
+  404 Not Found                 → Vérifier l'ID dans la requête
+  422 Validation Failed         → Vérifier les champs obligatoires
+  500 Internal Server Error     → Consulter storage/logs/laravel.log
+  Cannot connect to API         → Vérifier que php artisan serve est actif
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│  🎊 PRÊT À TESTER !                                                       │
+└───────────────────────────────────────────────────────────────────────────┘
+
+  ✨ Gestion automatique du JWT
+  ✨ Exemples pré-remplis pour toutes les requêtes
+  ✨ Données de test réalistes
+  ✨ Documentation complète
+  ✨ Scripts d'installation automatiques
+
+  Tout est configuré ! Lancez-vous ! 🚀
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  Version : 1.0.0                                                          ║
+║  Dernière mise à jour : 31 Décembre 2025                                  ║
+║  RoadStar Development Team                                                ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
