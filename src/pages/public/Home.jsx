@@ -21,7 +21,7 @@ import p16 from '../../assets/images/partenaires/Image16.jpg';
 import p17 from '../../assets/images/partenaires/Image17.jpg';
 import p18 from '../../assets/images/partenaires/Image18.jpg';
 import presentationImage from '../../assets/images/IMG_20230130_100803.jpg';
-
+<meta name="google-site-verification" content="HipksyBv0iX6oAnbpq1vt5jGK7pMDI7pAddDOA_qUiQ" />
 const allPartners = [p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18];
 
 function PartnersCarousel() {
